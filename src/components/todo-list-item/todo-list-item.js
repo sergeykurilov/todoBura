@@ -1,23 +1,65 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 
 import './todo-list-item.css';
+// function Name() {
+//     const [state, setState] = useState({
+//         name: true
+//     })
+//     console.log(state.name)
+//     function handlerClick() {
+//         setState((state) => {
+//             return {
+//                 name: !state.name
+//             }
+//         })
+//     }
+//     return (
+//         <ul>
+//             <li onClick={handlerClick}>
+//                 Name
+//             </li>
+//         </ul>
+//     )
+// }
 
 export default class TodoListItem extends Component {
+    state = {
+        done: false,
+        important: false
+    }
+    onLabelClick = () => {
+        this.setState(({done}) => {
+            return {
+                done: !done
+            }
+        })
+    }
+    onMarkImportant = () => {
+        this.setState(({important}) => {
+            return {
+                important: !important
+            }
+        })
+    }
     render() {
-        const {label, important} = this.props
-        const style = {
-            color: important ? 'steelblue' : 'black',
-            fontWeight: important ? 'bold' : 'normal'
-        };
+        const {label} = this.props
+        const {done, important} = this.state
+        let classNames = 'todo-list-item'
+        if(done){
+            classNames += ' done'
+        } if(important){
+            classNames += ' important'
+        }
         return(
-            <span className="todo-list-item">
+            <span className={classNames}>
       <span
           className="todo-list-item-label"
-          style={style}>
+          onClick={this.onLabelClick}
+      >
         {label}
       </span>
-
       <button type="button"
+              onClick={this.onMarkImportant}
               className="btn btn-outline-success btn-sm float-right">
         <i className="fa fa-exclamation" />
       </button>
@@ -27,6 +69,7 @@ export default class TodoListItem extends Component {
         <i className="fa fa-trash-o" />
       </button>
     </span>
-            )
+        )
     }
 }
+
